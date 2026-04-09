@@ -34,10 +34,10 @@ st.title("♻️ YOLOv10 Trash Classification Web App")
 # Load model once
 @st.cache_resource
 def load_model():
-    model_path = "yolov10n.pt"
+    model_path = "yolov8n.pt"
     if not os.path.exists(model_path):
         from urllib.request import urlretrieve
-        urlretrieve("https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov10n.pt", model_path)
+        urlretrieve("https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8n.pt", model_path)
     return YOLO(model_path)
 
 model = load_model()
