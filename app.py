@@ -1,3 +1,4 @@
+import streamlit as st
 from PIL import Image
 from ultralytics import YOLO
 import tempfile
@@ -8,7 +9,6 @@ biodegradable_items = [
     'orange', 'pizza', 'donut', 'cake', 'vegetable',
     'fruit', 'hot dog', 'bread', 'meat', 'fish', 'egg'
 ]
-
 non_biodegradable_items = [
     'bottle', 'wine glass', 'cup', 'fork', 'knife', 'spoon', 'bowl',
     'laptop', 'mouse', 'keyboard', 'cell phone',
@@ -37,15 +37,12 @@ if uploaded_file:
     # Save temp image
     with tempfile.NamedTemporaryFile(suffix=".jpg") as temp:
         image.save(temp.name)
-
         with st.spinner("🔍 Detecting objects..."):
             results = model(temp.name)
 
     boxes = results[0].boxes
-
     if boxes is not None and len(boxes) > 0:
         st.success("✅ Detection complete!")
-
         st.write("### 🎯 Detected Objects & Classification:")
 
         for box in boxes:
@@ -53,7 +50,6 @@ if uploaded_file:
             conf = float(box.conf)
             name = results[0].names[cls].lower()
 
-            # Classification logic
             if name in biodegradable_items:
                 classification = "Biodegradable ♻️"
             elif name in non_biodegradable_items:
@@ -63,8 +59,6 @@ if uploaded_file:
 
             st.write(f"🔹 **{name}** ({conf:.2f}) → {classification}")
 
-        # Show detection image
         st.image(results[0].plot(), caption="Detected Objects", use_column_width=True)
-
     else:
         st.warning("⚠️ No objects detected.")
